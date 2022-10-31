@@ -12,15 +12,32 @@ const MainContent = () => {
       <VisuallyHidden>
         <h1>All Photos</h1>
       </VisuallyHidden>
-      {data.map(({ id, src, alt, tags }) => (
-        <PhotoGridItem
-          key={id}
-          id={id}
-          src={src}
-          alt={alt}
-          tags={tags}
-        />
-      ))}
+      {data.map(({ id, src, alt, tags }) => {
+        const sources = [
+          {
+            srcset: `${src.replace('.jpg', '.avif 1x')},
+            ${src.replace('.jpg', '@2x.avif 2x')},
+            ${src.replace('.jpg', '@3x.avif 3x')}`,
+            type: 'image/avif',
+          },
+          {
+            srcset: `${src.replace('.jpg', '.jpg 1x')},
+            ${src.replace('.jpg', '@2x.jpg 2x')},
+            ${src.replace('.jpg', '@3x.jpg 3x')}`,
+            type: 'image/jpg',
+          },
+        ];
+        return (
+          <PhotoGridItem
+            key={id}
+            id={id}
+            src={src}
+            sources={sources}
+            alt={alt}
+            tags={tags}
+          />
+        );
+      })}
     </Wrapper>
   );
 };
